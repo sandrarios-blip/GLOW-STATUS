@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shots Glow — GLOW STATUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--black:#1a1818;--white:#FFFFFF;--lavender:#C0C1D7;--indigo:#4950BC;--cream:#F6F4F4;--charcoal:#272525;--muted:#8a8a9a;--font-display:'Cormorant Garamond',serif;--font-body:'Montserrat',sans-serif;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--black);color:var(--cream);font-family:var(--font-body);font-weight:300;overflow-x:hidden;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 4rem;background:rgba(26,24,24,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(192,193,215,0.12);}
+  .nav-logo{font-family:var(--font-display);font-size:1.4rem;font-weight:600;letter-spacing:0.3em;color:var(--lavender);text-decoration:none;text-transform:uppercase;}
+  .nav-links{display:flex;gap:2.5rem;list-style:none;}
+  .nav-links a{font-size:0.68rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:rgba(246,244,244,0.7);text-decoration:none;transition:color 0.3s;position:relative;}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--lavender);transition:width 0.3s ease;}
+  .nav-links a:hover,.nav-links a.active{color:var(--lavender);}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+
+  .page-hero{min-height:60vh;display:flex;flex-direction:column;justify-content:flex-end;padding:12rem 6rem 6rem;position:relative;overflow:hidden;}
+  .page-hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=1400&q=80') center/cover;filter:grayscale(20%) brightness(0.3);}
+  .page-hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,var(--black) 25%,rgba(73,80,188,0.2) 70%,transparent 100%);}
+  .page-hero-content{position:relative;z-index:2;max-width:700px;}
+  .page-tag{font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--indigo);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;}
+  .page-tag::before{content:'';display:block;width:2rem;height:1px;background:var(--indigo);}
+  .page-title{font-family:var(--font-display);font-size:clamp(3rem,5vw,5.5rem);font-weight:300;line-height:1.05;color:var(--cream);margin-bottom:1.5rem;}
+  .page-title em{font-style:italic;color:var(--lavender);}
+  .page-desc{font-size:0.8rem;line-height:1.9;color:rgba(246,244,244,0.6);max-width:520px;letter-spacing:0.03em;}
+
+  /* INTRO */
+  .shots-intro{padding:6rem 6rem 4rem;text-align:center;}
+  .shots-intro p{font-size:0.8rem;line-height:2;color:rgba(246,244,244,0.6);max-width:680px;margin:0 auto 1.5rem;}
+  .shots-intro .intro-rule{display:flex;align-items:center;gap:2rem;justify-content:center;margin:3rem 0;}
+  .shots-intro .intro-rule span{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--indigo);}
+  .shots-intro .intro-rule::before,.shots-intro .intro-rule::after{content:'';flex:1;height:1px;max-width:200px;background:linear-gradient(90deg,transparent,rgba(192,193,215,0.2));}
+
+  /* SHOTS GRID */
+  .shots-section{padding:2rem 6rem 8rem;}
+  .shots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+  .shot-card{border:1px solid rgba(192,193,215,0.1);overflow:hidden;transition:all 0.4s;position:relative;}
+  .shot-card:hover{border-color:rgba(192,193,215,0.3);transform:translateY(-4px);}
+  .shot-color-bar{height:3px;}
+  .shot-content{padding:2.5rem;}
+  .shot-emoji{font-size:2.5rem;display:block;margin-bottom:1.2rem;}
+  .shot-name{font-family:var(--font-display);font-size:1.4rem;font-weight:400;color:var(--cream);margin-bottom:0.5rem;line-height:1.3;}
+  .shot-benefit-tag{display:inline-block;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;background:rgba(73,80,188,0.15);color:var(--lavender);margin-bottom:1.5rem;}
+  .shot-benefit-desc{font-size:0.7rem;line-height:1.85;color:rgba(246,244,244,0.55);margin-bottom:2rem;font-style:italic;}
+  .shot-ingredients-title{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--indigo);margin-bottom:1rem;}
+  .shot-ingredients{list-style:none;margin-bottom:2rem;}
+  .shot-ingredients li{font-size:0.68rem;color:rgba(246,244,244,0.65);padding:0.4rem 0;border-bottom:1px solid rgba(192,193,215,0.06);display:flex;align-items:center;gap:0.6rem;line-height:1.4;}
+  .shot-ingredients li::before{content:'·';color:var(--lavender);font-size:1rem;flex-shrink:0;}
+  .shot-tip{padding:1rem 1.2rem;background:rgba(73,80,188,0.08);border-left:2px solid var(--indigo);}
+  .shot-tip p{font-size:0.62rem;color:rgba(192,193,215,0.7);line-height:1.6;font-style:italic;}
+
+  /* RITUAL RULES */
+  .ritual-rules{padding:6rem 6rem;background:var(--charcoal);}
+  .section-label{font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--indigo);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+  .section-label::before{content:'';display:block;width:2rem;height:1px;background:var(--indigo);}
+  .section-title{font-family:var(--font-display);font-size:clamp(2rem,3.5vw,3rem);font-weight:300;color:var(--cream);margin-bottom:3rem;line-height:1.2;}
+  .section-title em{font-style:italic;color:var(--lavender);}
+  .rules-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
+  .rule-item{padding:2.5rem 2rem;border:1px solid rgba(192,193,215,0.1);text-align:center;transition:all 0.3s;}
+  .rule-item:hover{background:rgba(192,193,215,0.04);border-color:rgba(192,193,215,0.25);}
+  .rule-icon{font-size:2rem;margin-bottom:1.2rem;display:block;}
+  .rule-title{font-family:var(--font-display);font-size:1.05rem;color:var(--cream);margin-bottom:0.8rem;}
+  .rule-desc{font-size:0.67rem;color:rgba(246,244,244,0.5);line-height:1.75;}
+
+  /* QUOTE */
+  .shots-quote{padding:8rem 6rem;text-align:center;background:var(--black);}
+  .shots-quote blockquote{font-family:var(--font-display);font-size:clamp(1.5rem,2.5vw,2.5rem);font-style:italic;font-weight:300;color:var(--cream);max-width:700px;margin:0 auto 2rem;line-height:1.4;}
+  .shots-quote cite{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);}
+
+  footer{background:var(--charcoal);padding:5rem 6rem 3rem;border-top:1px solid rgba(192,193,215,0.1);}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem;}
+  .footer-brand .logo{font-family:var(--font-display);font-size:1.6rem;font-weight:600;letter-spacing:0.3em;color:var(--lavender);display:block;margin-bottom:1rem;}
+  .footer-brand p{font-size:0.7rem;line-height:1.8;color:var(--muted);max-width:240px;}
+  .footer-col h4{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--lavender);margin-bottom:1.5rem;}
+  .footer-col ul{list-style:none;}
+  .footer-col ul li{margin-bottom:0.7rem;}
+  .footer-col ul li a{font-size:0.72rem;color:var(--muted);text-decoration:none;letter-spacing:0.05em;transition:color 0.3s;}
+  .footer-col ul li a:hover{color:var(--cream);}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid rgba(192,193,215,0.1);}
+  .footer-bottom p{font-size:0.6rem;color:var(--muted);letter-spacing:0.1em;}
+  .footer-slogan{font-family:var(--font-display);font-style:italic;font-size:0.85rem;color:rgba(192,193,215,0.4);}
+
+  .fade-up{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease;}
+  .fade-up.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:1024px){
+    nav{padding:1.5rem 2rem;} .nav-links{gap:1.2rem;}
+    .page-hero,.shots-intro,.shots-section,.ritual-rules,.shots-quote{padding-left:2rem;padding-right:2rem;}
+    .shots-grid{grid-template-columns:1fr;}
+    .rules-grid{grid-template-columns:repeat(2,1fr);}
+    footer{padding:4rem 2rem 2rem;} .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Glow Status</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="ritual.html">El Ritual</a></li>
+    <li><a href="skincare.html">Skincare</a></li>
+    <li><a href="bienestar.html">Bienestar</a></li>
+    <li><a href="shots.html" class="active">Shots Glow</a></li>
+    <li><a href="nosotras.html">Nosotras</a></li>
+  </ul>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <div class="page-tag">Ritual de Bienestar</div>
+    <h1 class="page-title">Shots de<br><em>Bienestar</em></h1>
+    <p class="page-desc">Concentrados naturales que potencian el glow desde adentro. Se toman en ayunas, en pequeñas dosis pero con grandes resultados.</p>
+  </div>
+</section>
+
+<section class="shots-intro">
+  <p>Los shots son una de las prácticas más poderosas que puedes incorporar a tu rutina diaria. Son concentrados naturales que activan tu sistema inmune, mejoran la digestión y le dan luminosidad a tu piel — todo desde adentro.</p>
+  <p>Prepáralos frescos, preferiblemente al momento. La constancia es clave — los resultados se notan después de 3 a 4 semanas de uso regular.</p>
+  <div class="intro-rule"><span>6 shots · Tu ritual diario</span></div>
+</section>
+
+<section class="shots-section">
+  <div class="shots-grid">
+
+    <div class="shot-card fade-up">
+      <div class="shot-color-bar" style="background:linear-gradient(90deg,#f5c842,#e8a020)"></div>
+      <div class="shot-content">
+        <span class="shot-emoji">🟡</span>
+        <div class="shot-name">Cúrcuma · Jengibre · Limón</div>
+        <span class="shot-benefit-tag">Antiinflamatorio · Inmunidad · Digestión</span>
+        <p class="shot-benefit-desc">Antiinflamatorio potente que activa el sistema inmune, mejora la digestión y le da luminosidad a la piel. La pimienta negra potencia la absorción de la cúrcuma hasta un 2000%.</p>
+        <div class="shot-ingredients-title">Ingredientes</div>
+        <ul class="shot-ingredients">
+          <li>1 cucharadita de cúrcuma en polvo</li>
+          <li>1 trozo de jengibre fresco rallado</li>
+          <li>Jugo de ½ limón</li>
+          <li>Pizca de pimienta negra (clave)</li>
+          <li>50 ml de agua tibia</li>
+        </ul>
+        <div class="shot-tip"><p>✦ La pimienta negra es esencial — sin ella la cúrcuma no se absorbe correctamente.</p></div>
+      </div>
+    </div>
+
+    <div class="shot-card fade-up">
+      <div class="shot-color-bar" style="background:linear-gradient(90deg,#4caf50,#2e7d32)"></div>
+      <div class="shot-content">
+        <span class="shot-emoji">🟢</span>
+        <div class="shot-name">Shot Verde Detox</div>
+        <span class="shot-benefit-tag">Detox · Hidratación · Claridad</span>
+        <p class="shot-benefit-desc">Desintoxica el organismo, reduce la inflamación, hidrata profundamente y aporta claridad al cutis. Ideal para después de noches difíciles o semanas de estrés.</p>
+        <div class="shot-ingredients-title">Ingredientes</div>
+        <ul class="shot-ingredients">
+          <li>½ pepino fresco</li>
+          <li>Un puñado de espinaca</li>
+          <li>Jugo de 1 limón</li>
+          <li>1 tallo de apio</li>
+          <li>1 cm de jengibre fresco</li>
+          <li>50 ml de agua fría</li>
+        </ul>
+        <div class="shot-tip"><p>✦ Ideal para tomar después de noches de poco sueño — activa la energía y desinfla.</p></div>
+      </div>
+    </div>
+
+    <div class="shot-card fade-up">
+      <div class="shot-color-bar" style="background:linear-gradient(90deg,#ff8c00,#e65100)"></div>
+      <div class="shot-content">
+        <span class="shot-emoji">🟠</span>
+        <div class="shot-name">Zanahoria · Naranja · Jengibre</div>
+        <span class="shot-benefit-tag">Vitamina C · Colágeno · Luminosidad</span>
+        <p class="shot-benefit-desc">Cargado de betacarotenos y vitamina C, protege la piel del daño oxidativo, aporta ese tono cálido y luminoso y refuerza el colágeno natural del organismo.</p>
+        <div class="shot-ingredients-title">Ingredientes</div>
+        <ul class="shot-ingredients">
+          <li>Jugo de 2 zanahorias medianas</li>
+          <li>Jugo de 1 naranja</li>
+          <li>1 cm de jengibre fresco</li>
+          <li>Pizca de cúrcuma</li>
+        </ul>
+        <div class="shot-tip"><p>✦ Este shot da ese "glow cálido" que se nota en el tono de piel. Tómalo 4-5 veces por semana.</p></div>
+      </div>
+    </div>
+
+    <div class="shot-card fade-up">
+      <div class="shot-color-bar" style="background:linear-gradient(90deg,#c2185b,#880e4f)"></div>
+      <div class="shot-content">
+        <span class="shot-emoji">🔴</span>
+        <div class="shot-name">Remolacha · Limón · Jengibre</div>
+        <span class="shot-benefit-tag">Circulación · Purificación · Hierro</span>
+        <p class="shot-benefit-desc">Purifica la sangre, mejora la circulación y aporta ese tono rosado y saludable que se ve directamente en la piel. Antiinflamatorio y rico en hierro natural.</p>
+        <div class="shot-ingredients-title">Ingredientes</div>
+        <ul class="shot-ingredients">
+          <li>Jugo de ½ remolacha mediana</li>
+          <li>Jugo de 1 limón</li>
+          <li>1 cm de jengibre fresco</li>
+          <li>50 ml de agua fría</li>
+        </ul>
+        <div class="shot-tip"><p>✦ El color de tu orina puede cambiar ligeramente — es completamente normal con la remolacha.</p></div>
+      </div>
+    </div>
+
+    <div class="shot-card fade-up">
+      <div class="shot-color-bar" style="background:linear-gradient(90deg,#66bb6a,#43a047)"></div>
+      <div class="shot-content">
+        <span class="shot-emoji">🍃</span>
+        <div class="shot-name">Aloe Vera · Limón · Menta</div>
+        <span class="shot-benefit-tag">Anti-Acné · Regeneración · Frescura</span>
+        <p class="shot-benefit-desc">Regenera la piel desde adentro, reduce el acné y las imperfecciones, hidrata profundamente y aporta frescura al sistema digestivo. Perfecto para pieles reactivas.</p>
+        <div class="shot-ingredients-title">Ingredientes</div>
+        <ul class="shot-ingredients">
+          <li>2 cucharadas de gel de aloe vera puro</li>
+          <li>Jugo de ½ limón</li>
+          <li>3-4 hojas de menta fresca</li>
+          <li>50 ml de agua fría</li>
+        </ul>
+        <div class="shot-tip"><p>✦ Usa aloe vera puro sin fragrancias ni conservantes. Puedes extraerlo directamente de la planta.</p></div>
+      </div>
+    </div>
+
+    <div class="shot-card fade-up">
+      <div class="shot-color-bar" style="background:linear-gradient(90deg,#8d6e63,#5d4037)"></div>
+      <div class="shot-content">
+        <span class="shot-emoji">🌿</span>
+        <div class="shot-name">Shot de Colágeno Natural</div>
+        <span class="shot-benefit-tag">Elasticidad · Anti-Aging · Energía</span>
+        <p class="shot-benefit-desc">Estimula la producción natural de colágeno, mejora la elasticidad de la piel, reduce líneas finas y aporta energía sostenida durante todo el día.</p>
+        <div class="shot-ingredients-title">Ingredientes</div>
+        <ul class="shot-ingredients">
+          <li>Jugo de 1 limón</li>
+          <li>1 cucharada de cúrcuma</li>
+          <li>1 cucharadita de maca en polvo</li>
+          <li>100 ml de agua de coco</li>
+        </ul>
+        <div class="shot-tip"><p>✦ La maca le da energía sostenida. Empieza con media cucharadita si eres nueva en este ingrediente.</p></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="ritual-rules">
+  <div class="section-label">Cómo Usarlos</div>
+  <h2 class="section-title">Las reglas del<br><em>shot perfecto</em></h2>
+  <div class="rules-grid">
+    <div class="rule-item fade-up">
+      <span class="rule-icon">🌅</span>
+      <div class="rule-title">En ayunas</div>
+      <p class="rule-desc">Tómalos antes del desayuno para máxima absorción. El sistema digestivo vacío aprovecha mejor todos los nutrientes.</p>
+    </div>
+    <div class="rule-item fade-up">
+      <span class="rule-icon">🥤</span>
+      <div class="rule-title">Frescos y al momento</div>
+      <p class="rule-desc">Prepáralos justo antes de tomar. Evita guardarlos más de 24 horas — los nutrientes se degradan con el tiempo.</p>
+    </div>
+    <div class="rule-item fade-up">
+      <span class="rule-icon">🌱</span>
+      <div class="rule-title">Empieza de a uno</div>
+      <p class="rule-desc">Incorpora un shot por semana para que tu cuerpo se adapte. No es necesario tomarlos todos a la vez desde el inicio.</p>
+    </div>
+    <div class="rule-item fade-up">
+      <span class="rule-icon">📅</span>
+      <div class="rule-title">3-4 semanas de constancia</div>
+      <p class="rule-desc">Los resultados visibles se notan después de 3 a 4 semanas de uso regular. La constancia es la clave del glow.</p>
+    </div>
+  </div>
+</section>
+
+<section class="shots-quote">
+  <blockquote>"Tómalos en ayunas para máxima absorción. La constancia es clave — los resultados se notan después de 3 a 4 semanas de uso regular."</blockquote>
+  <cite>— Glow Status · Ritual de Bienestar Diario</cite>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">GLOW STATUS</span>
+      <p>Belleza consciente de adentro hacia afuera. Acompañándote en la construcción de tu mejor versión con constancia, disciplina y amor propio.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explorar</h4>
+      <ul>
+        <li><a href="ritual.html">El Ritual</a></li>
+        <li><a href="skincare.html">Skincare</a></li>
+        <li><a href="bienestar.html">Bienestar</a></li>
+        <li><a href="shots.html">Shots Glow</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Comunidad</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">Pinterest</a></li>
+        <li><a href="#">Newsletter</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Nosotras</h4>
+      <ul>
+        <li><a href="nosotras.html">La Historia</a></li>
+        <li><a href="nosotras.html">Filosofía</a></li>
+        <li><a href="#">Glow Girls</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Glow Status · Cartago, Colombia · Todos los derechos reservados</p>
+    <span class="footer-slogan">De adentro hacia afuera ✦</span>
+  </div>
+</footer>
+
+<script>
+  // Animación de aparición al hacer scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting) {
+        setTimeout(()=>e.target.classList.add('visible'), i * 100);
+      }
+    });
+  },{threshold:0.08});
+  
+  document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+
+</body>
+</html>

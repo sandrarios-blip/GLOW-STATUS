@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Ritual — GLOW STATUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #1a1818;
+    --white: #FFFFFF;
+    --lavender: #C0C1D7;
+    --indigo: #4950BC;
+    --cream: #F6F4F4;
+    --soft-lavender: #DADBF1;
+    --charcoal: #272525;
+    --muted: #8a8a9a;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Montserrat', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--black); color: var(--cream); font-family: var(--font-body); font-weight: 300; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 4rem;
+    background: rgba(26,24,24,0.9); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(192,193,215,0.12);
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.3em; color: var(--lavender); text-decoration: none; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.68rem; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(246,244,244,0.7); text-decoration: none; transition: color 0.3s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--lavender); transition: width 0.3s ease; }
+  .nav-links a:hover, .nav-links a.active { color: var(--lavender); }
+  .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+  /* PAGE HERO */
+  .page-hero {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 12rem 6rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero-bg {
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1400&q=80') center/cover;
+    filter: grayscale(40%) brightness(0.3);
+  }
+
+  .page-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, var(--black) 20%, rgba(73,80,188,0.2) 70%, transparent 100%);
+  }
+
+  .page-hero-content { position: relative; z-index: 2; max-width: 700px; }
+
+  .page-tag { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--indigo); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+  .page-tag::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--indigo); }
+
+  .page-title { font-family: var(--font-display); font-size: clamp(3rem, 5vw, 5.5rem); font-weight: 300; line-height: 1.05; color: var(--cream); margin-bottom: 1.5rem; }
+  .page-title em { font-style: italic; color: var(--lavender); }
+
+  .page-desc { font-size: 0.8rem; line-height: 1.9; color: rgba(246,244,244,0.6); max-width: 500px; letter-spacing: 0.03em; }
+
+  /* RITUAL STEPS */
+  .ritual-steps { padding: 8rem 6rem; }
+
+  .steps-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; margin-bottom: 6rem; align-items: center; }
+
+  .steps-intro-text h2 { font-family: var(--font-display); font-size: clamp(2rem, 3vw, 3rem); font-weight: 300; color: var(--cream); margin-bottom: 1.5rem; line-height: 1.2; }
+  .steps-intro-text h2 em { font-style: italic; color: var(--lavender); }
+  .steps-intro-text p { font-size: 0.75rem; line-height: 2; color: rgba(246,244,244,0.55); }
+
+  .steps-visual { position: relative; height: 400px; }
+  .steps-visual img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); }
+  .steps-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(73,80,188,0.3), transparent); }
+
+  /* STEP TIMELINE */
+  .timeline { position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 2.5rem; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, var(--indigo) 10%, var(--lavender) 50%, var(--indigo) 90%, transparent); }
+
+  .timeline-item { display: grid; grid-template-columns: 5rem 1fr; gap: 3rem; margin-bottom: 4rem; align-items: start; }
+
+  .timeline-dot { width: 5rem; display: flex; align-items: center; justify-content: center; padding-top: 0.5rem; }
+  .timeline-dot-inner { width: 1rem; height: 1rem; border-radius: 50%; background: var(--indigo); border: 2px solid var(--lavender); position: relative; z-index: 1; transition: transform 0.3s, box-shadow 0.3s; }
+  .timeline-item:hover .timeline-dot-inner { transform: scale(1.4); box-shadow: 0 0 20px rgba(73,80,188,0.6); }
+
+  .timeline-content { padding: 2.5rem; border: 1px solid rgba(192,193,215,0.1); transition: all 0.4s; cursor: default; }
+  .timeline-item:hover .timeline-content { border-color: rgba(192,193,215,0.25); background: rgba(192,193,215,0.03); }
+
+  .timeline-step-num { font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--indigo); margin-bottom: 0.8rem; }
+
+  .timeline-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; color: var(--cream); margin-bottom: 1rem; }
+
+  .timeline-desc { font-size: 0.72rem; line-height: 1.9; color: rgba(246,244,244,0.55); letter-spacing: 0.03em; margin-bottom: 1.2rem; }
+
+  .timeline-tip { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 1.2rem; background: rgba(73,80,188,0.08); border-left: 2px solid var(--indigo); }
+  .timeline-tip span { font-size: 0.65rem; line-height: 1.7; color: rgba(192,193,215,0.7); font-style: italic; }
+
+  /* PILLAR GRID */
+  .pillars-visual { padding: 6rem 6rem; background: var(--charcoal); }
+
+  .pillars-visual h2 { font-family: var(--font-display); font-size: clamp(2rem, 3vw, 3rem); font-weight: 300; color: var(--cream); margin-bottom: 4rem; text-align: center; }
+  .pillars-visual h2 em { font-style: italic; color: var(--lavender); }
+
+  .pillars-big-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+  .pillar-big { padding: 3rem 2.5rem; border: 1px solid rgba(192,193,215,0.1); position: relative; overflow: hidden; transition: all 0.4s; }
+  .pillar-big:hover { border-color: rgba(192,193,215,0.3); transform: translateY(-4px); }
+
+  .pillar-big::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--indigo), var(--lavender)); transform: scaleX(0); transition: transform 0.4s; transform-origin: left; }
+  .pillar-big:hover::before { transform: scaleX(1); }
+
+  .pillar-big-num { font-family: var(--font-display); font-size: 5rem; font-weight: 300; color: rgba(192,193,215,0.06); line-height: 1; position: absolute; top: 1rem; right: 1.5rem; }
+
+  .pillar-big-icon { font-size: 2rem; margin-bottom: 1.5rem; display: block; }
+  .pillar-big-name { font-family: var(--font-display); font-size: 1.4rem; font-weight: 400; color: var(--cream); margin-bottom: 1rem; }
+  .pillar-big-desc { font-size: 0.7rem; line-height: 1.85; color: rgba(246,244,244,0.5); }
+
+  /* PHILOSOPHY QUOTE */
+  .ritual-philosophy { padding: 8rem 6rem; text-align: center; background: var(--black); position: relative; overflow: hidden; }
+  .ritual-philosophy::before { content: '✦'; position: absolute; font-size: 30rem; color: rgba(192,193,215,0.02); top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: serif; pointer-events: none; }
+
+  .ritual-philosophy blockquote { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 3rem); font-style: italic; font-weight: 300; color: var(--cream); max-width: 800px; margin: 0 auto 2rem; line-height: 1.4; }
+  .ritual-philosophy cite { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+
+  footer {
+    background: var(--charcoal); padding: 5rem 6rem 3rem;
+    border-top: 1px solid rgba(192,193,215,0.1);
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+  .footer-brand .logo { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.3em; color: var(--lavender); display: block; margin-bottom: 1rem; }
+  .footer-brand p { font-size: 0.7rem; line-height: 1.8; color: var(--muted); max-width: 240px; }
+  .footer-col h4 { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--lavender); margin-bottom: 1.5rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.7rem; }
+  .footer-col ul li a { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.05em; transition: color 0.3s; }
+  .footer-col ul li a:hover { color: var(--cream); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid rgba(192,193,215,0.1); }
+  .footer-bottom p { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; }
+  .footer-slogan { font-family: var(--font-display); font-style: italic; font-size: 0.85rem; color: rgba(192,193,215,0.4); }
+
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 1024px) {
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { gap: 1.2rem; }
+    .page-hero { padding: 10rem 2rem 4rem; }
+    .ritual-steps { padding: 5rem 2rem; }
+    .steps-intro { grid-template-columns: 1fr; gap: 3rem; }
+    .timeline::before { left: 1.5rem; }
+    .timeline-item { grid-template-columns: 3.5rem 1fr; gap: 1.5rem; }
+    .pillars-visual { padding: 5rem 2rem; }
+    .pillars-big-grid { grid-template-columns: 1fr; }
+    .ritual-philosophy { padding: 5rem 2rem; }
+    footer { padding: 4rem 2rem 2rem; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Glow Status</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="ritual.html" class="active">El Ritual</a></li>
+    <li><a href="skincare.html">Skincare</a></li>
+    <li><a href="bienestar.html">Bienestar</a></li>
+    <li><a href="shots.html">Shots Glow</a></li>
+    <li><a href="nosotras.html">Nosotras</a></li>
+  </ul>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <div class="page-tag">Filosofía de Marca</div>
+    <h1 class="page-title">El <em>Ritual</em><br>Glow Status</h1>
+    <p class="page-desc">Un ritual no es una rutina mecánica. Es un acto consciente de amor propio. Aquí te acompañamos paso a paso en la construcción de tu mejor versión.</p>
+  </div>
+</section>
+
+<section class="ritual-steps">
+  <div class="steps-intro">
+    <div class="steps-intro-text fade-up">
+      <h2>Un <em>Glow Up</em> más allá<br>de la superficie</h2>
+      <p style="margin-bottom:1rem">Un "glow up" es una evolución que abarca tu bienestar físico, mental y emocional de manera integral. No se trata solo de cambiar tu apariencia, sino de cultivar una versión más auténtica y segura de ti misma.</p>
+      <p>En Glow Status trabajamos desde adentro hacia afuera: no solo nos importa cómo te ves, sino cómo te sientes contigo misma. Porque la verdadera luminosidad empieza en el plato y en la mente.</p>
+    </div>
+    <div class="steps-visual fade-up">
+      <img src="https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=700&q=80" alt="Glow Up">
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+      <div class="timeline-content">
+        <div class="timeline-step-num">Paso 01</div>
+        <h3 class="timeline-title">Reconocerte a ti misma</h3>
+        <p class="timeline-desc">Antes de cualquier rutina o producto, el glow comienza con el autoconocimiento. Identificar tu tipo de piel, tus necesidades y tus patrones emocionales es el punto de partida de toda transformación real.</p>
+        <div class="timeline-tip"><span>✦ Sin autoconocimiento no hay transformación. El Glow empieza con honestidad.</span></div>
+      </div>
+    </div>
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+      <div class="timeline-content">
+        <div class="timeline-step-num">Paso 02</div>
+        <h3 class="timeline-title">Nutrir desde adentro</h3>
+        <p class="timeline-desc">La piel es el espejo de lo que comes, piensas y sientes. Incorporar frutas, verduras de colores y shots de bienestar es la base del glow real. La hidratación con mínimo 2 litros de agua al día es innegociable.</p>
+        <div class="timeline-tip"><span>✦ Come despacio y en calma — el estrés durante las comidas bloquea la absorción de nutrientes.</span></div>
+      </div>
+    </div>
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+      <div class="timeline-content">
+        <div class="timeline-step-num">Paso 03</div>
+        <h3 class="timeline-title">La rutina de skincare</h3>
+        <p class="timeline-desc">Limpieza profunda, exfoliación inteligente, hidratación esencial y protección solar. Una piel luminosa no necesita productos milagrosos, necesita consistencia. El secreto es la constancia en lo básico.</p>
+        <div class="timeline-tip"><span>✦ Menos es más: 4 pasos bien ejecutados valen más que 10 productos aplicados sin criterio.</span></div>
+      </div>
+    </div>
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+      <div class="timeline-content">
+        <div class="timeline-step-num">Paso 04</div>
+        <h3 class="timeline-title">El bienestar emocional</h3>
+        <p class="timeline-desc">No siempre estamos bien — y eso también hace parte del proceso. Trabajar la autoestima, los pensamientos propios y la aceptación personal es tan importante como cualquier sérum o crema.</p>
+        <div class="timeline-tip"><span>✦ La mentalidad positiva no niega el dolor, lo transforma. Eso también es Glow Status.</span></div>
+      </div>
+    </div>
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+      <div class="timeline-content">
+        <div class="timeline-step-num">Paso 05</div>
+        <h3 class="timeline-title">La constancia como ritual</h3>
+        <p class="timeline-desc">El glow no es un destino, es el resultado de decisiones diarias. La constancia es el mayor acto de amor propio. Cada pequeña acción consciente se acumula y se transforma en la versión más radiante de ti.</p>
+        <div class="timeline-tip"><span>✦ Tu piel tarda entre 4 y 6 semanas en reflejar los cambios. Sé constante y paciente.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pillars-visual">
+  <h2>Los 5 Pilares de Tu<br><em>Transformación Consciente</em></h2>
+  <div class="pillars-big-grid">
+    <div class="pillar-big fade-up">
+      <div class="pillar-big-num">01</div>
+      <span class="pillar-big-icon">✧</span>
+      <div class="pillar-big-name">Cuidado de la Piel</div>
+      <p class="pillar-big-desc">Rutinas diarias y semanales para una piel luminosa y saludable que refleje tu bienestar interior. Productos que nutren, activos que transforman, constancia que da resultados.</p>
+    </div>
+    <div class="pillar-big fade-up">
+      <div class="pillar-big-num">02</div>
+      <span class="pillar-big-icon">◇</span>
+      <div class="pillar-big-name">Bienestar Físico</div>
+      <p class="pillar-big-desc">Nutrición balanceada, hidratación constante y movimiento regular para una energía vibrante y sostenible. Tu cuerpo es el primer templo del glow.</p>
+    </div>
+    <div class="pillar-big fade-up">
+      <div class="pillar-big-num">03</div>
+      <span class="pillar-big-icon">◈</span>
+      <div class="pillar-big-name">Estilo Personal</div>
+      <p class="pillar-big-desc">Expresa tu esencia única y potencia tu imagen con confianza y autenticidad. El estilo que nace del interior nunca pasa de moda.</p>
+    </div>
+    <div class="pillar-big fade-up">
+      <div class="pillar-big-num">04</div>
+      <span class="pillar-big-icon">✦</span>
+      <div class="pillar-big-name">Desarrollo Personal</div>
+      <p class="pillar-big-desc">Cultiva relaciones significativas, aprende continuamente y crece cada día con propósito. El glow mental se refleja en todo lo que haces.</p>
+    </div>
+    <div class="pillar-big fade-up">
+      <div class="pillar-big-num">05</div>
+      <span class="pillar-big-icon">✺</span>
+      <div class="pillar-big-name">Mentalidad Positiva</div>
+      <p class="pillar-big-desc">Aceptación, gratitud y optimismo como tus mejores aliados para una vida plena y radiante. No siempre estamos bien — y ese proceso también es parte del glow.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ritual-philosophy">
+  <blockquote>"El Glow no es un destino — es el resultado de decisiones diarias. Come bien, hidrátate, descansa y cuídate."</blockquote>
+  <cite>— Filosofía Glow Status · Belleza Consciente</cite>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><span class="logo">GLOW STATUS</span><p>Belleza consciente de adentro hacia afuera. Acompañándote en la construcción de tu mejor versión con constancia, disciplina y amor propio.</p></div>
+    <div class="footer-col"><h4>Explorar</h4><ul><li><a href="ritual.html">El Ritual</a></li><li><a href="skincare.html">Skincare</a></li><li><a href="bienestar.html">Bienestar</a></li><li><a href="shots.html">Shots Glow</a></li></ul></div>
+    <div class="footer-col"><h4>Comunidad</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li><li><a href="#">Pinterest</a></li><li><a href="#">Newsletter</a></li></ul></div>
+    <div class="footer-col"><h4>Nosotras</h4><ul><li><a href="nosotras.html">La Historia</a></li><li><a href="nosotras.html">Filosofía</a></li><li><a href="#">Glow Girls</a></li><li><a href="#">Contacto</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Glow Status · Cartago, Colombia · Todos los derechos reservados</p><span class="footer-slogan">De adentro hacia afuera ✦</span></div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 100); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

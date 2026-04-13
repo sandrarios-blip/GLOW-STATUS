@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bienestar — GLOW STATUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--black:#1a1818;--white:#FFFFFF;--lavender:#C0C1D7;--indigo:#4950BC;--cream:#F6F4F4;--charcoal:#272525;--muted:#8a8a9a;--font-display:'Cormorant Garamond',serif;--font-body:'Montserrat',sans-serif;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--black);color:var(--cream);font-family:var(--font-body);font-weight:300;overflow-x:hidden;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 4rem;background:rgba(26,24,24,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(192,193,215,0.12);}
+  .nav-logo{font-family:var(--font-display);font-size:1.4rem;font-weight:600;letter-spacing:0.3em;color:var(--lavender);text-decoration:none;text-transform:uppercase;}
+  .nav-links{display:flex;gap:2.5rem;list-style:none;}
+  .nav-links a{font-size:0.68rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:rgba(246,244,244,0.7);text-decoration:none;transition:color 0.3s;position:relative;}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--lavender);transition:width 0.3s ease;}
+  .nav-links a:hover,.nav-links a.active{color:var(--lavender);}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+
+  .page-hero{min-height:65vh;display:flex;flex-direction:column;justify-content:flex-end;padding:12rem 6rem 6rem;position:relative;overflow:hidden;}
+  .page-hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80') center/cover;filter:grayscale(30%) brightness(0.3);}
+  .page-hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,var(--black) 25%,rgba(73,80,188,0.15) 70%,transparent);}
+  .page-hero-content{position:relative;z-index:2;max-width:700px;}
+  .page-tag{font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--indigo);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;}
+  .page-tag::before{content:'';display:block;width:2rem;height:1px;background:var(--indigo);}
+  .page-title{font-family:var(--font-display);font-size:clamp(3rem,5vw,5.5rem);font-weight:300;line-height:1.05;color:var(--cream);margin-bottom:1.5rem;}
+  .page-title em{font-style:italic;color:var(--lavender);}
+  .page-desc{font-size:0.8rem;line-height:1.9;color:rgba(246,244,244,0.6);max-width:520px;letter-spacing:0.03em;}
+
+  .section-label{font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--indigo);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+  .section-label::before{content:'';display:block;width:2rem;height:1px;background:var(--indigo);}
+  .section-title{font-family:var(--font-display);font-size:clamp(2rem,3.5vw,3.5rem);font-weight:300;color:var(--cream);margin-bottom:3rem;line-height:1.15;}
+  .section-title em{font-style:italic;color:var(--lavender);}
+
+  /* FRUITS */
+  .fruits{padding:8rem 6rem;background:var(--black);}
+  .foods-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(192,193,215,0.08);margin-bottom:5rem;}
+  .food-card{background:var(--black);padding:2.5rem 2rem;transition:all 0.4s;position:relative;overflow:hidden;}
+  .food-card:hover{background:rgba(192,193,215,0.04);}
+  .food-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--indigo),var(--lavender));transform:scaleX(0);transition:transform 0.4s;transform-origin:left;}
+  .food-card:hover::after{transform:scaleX(1);}
+
+  .food-emoji{font-size:2rem;display:block;margin-bottom:1rem;}
+  .food-name{font-family:var(--font-display);font-size:1.1rem;color:var(--cream);margin-bottom:0.7rem;}
+  .food-benefit{font-size:0.65rem;line-height:1.75;color:rgba(246,244,244,0.5);}
+
+  /* VEGETABLES */
+  .vegetables{padding:0 6rem 8rem;background:var(--black);}
+
+  /* HOW TO EAT */
+  .how-to-eat{padding:8rem 6rem;background:var(--charcoal);display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+  .how-img{position:relative;height:500px;}
+  .how-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%);}
+  .how-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(73,80,188,0.25),transparent 60%);}
+
+  .how-content h2{font-family:var(--font-display);font-size:clamp(2rem,3vw,3rem);font-weight:300;color:var(--cream);margin-bottom:2rem;line-height:1.2;}
+  .how-content h2 em{font-style:italic;color:var(--lavender);}
+  .how-rules{display:flex;flex-direction:column;gap:1.2rem;}
+  .how-rule{display:flex;gap:1.5rem;align-items:flex-start;padding:1.2rem 1.5rem;border:1px solid rgba(192,193,215,0.08);transition:all 0.3s;}
+  .how-rule:hover{border-color:rgba(192,193,215,0.2);background:rgba(192,193,215,0.03);}
+  .how-rule-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.2rem;}
+  .how-rule-text{font-size:0.7rem;line-height:1.75;color:rgba(246,244,244,0.6);}
+  .how-rule-text strong{display:block;font-size:0.75rem;font-weight:500;color:var(--cream);margin-bottom:0.3rem;}
+
+  /* WELLNESS PILLARS */
+  .wellness{padding:8rem 6rem;background:var(--black);}
+  .wellness-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;}
+  .wellness-card{padding:3rem 2.5rem;border:1px solid rgba(192,193,215,0.1);transition:all 0.4s;position:relative;overflow:hidden;}
+  .wellness-card:hover{border-color:rgba(192,193,215,0.25);transform:translateY(-4px);}
+  .wellness-icon{font-size:2.5rem;margin-bottom:1.5rem;display:block;}
+  .wellness-name{font-family:var(--font-display);font-size:1.3rem;color:var(--cream);margin-bottom:1rem;}
+  .wellness-desc{font-size:0.7rem;line-height:1.85;color:rgba(246,244,244,0.5);}
+  .wellness-accent{position:absolute;top:-2rem;right:-2rem;font-size:8rem;color:rgba(73,80,188,0.05);font-family:var(--font-display);line-height:1;pointer-events:none;}
+
+  /* QUOTE */
+  .bienestar-quote{padding:8rem 6rem;text-align:center;background:var(--charcoal);}
+  .bienestar-quote blockquote{font-family:var(--font-display);font-size:clamp(1.5rem,2.5vw,2.8rem);font-style:italic;font-weight:300;color:var(--cream);max-width:750px;margin:0 auto 2rem;line-height:1.4;}
+  .bienestar-quote cite{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);}
+
+  footer{background:var(--charcoal);padding:5rem 6rem 3rem;border-top:1px solid rgba(192,193,215,0.1);}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem;}
+  .footer-brand .logo{font-family:var(--font-display);font-size:1.6rem;font-weight:600;letter-spacing:0.3em;color:var(--lavender);display:block;margin-bottom:1rem;}
+  .footer-brand p{font-size:0.7rem;line-height:1.8;color:var(--muted);max-width:240px;}
+  .footer-col h4{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--lavender);margin-bottom:1.5rem;}
+  .footer-col ul{list-style:none;}
+  .footer-col ul li{margin-bottom:0.7rem;}
+  .footer-col ul li a{font-size:0.72rem;color:var(--muted);text-decoration:none;letter-spacing:0.05em;transition:color 0.3s;}
+  .footer-col ul li a:hover{color:var(--cream);}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid rgba(192,193,215,0.1);}
+  .footer-bottom p{font-size:0.6rem;color:var(--muted);letter-spacing:0.1em;}
+  .footer-slogan{font-family:var(--font-display);font-style:italic;font-size:0.85rem;color:rgba(192,193,215,0.4);}
+
+  .fade-up{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease;}
+  .fade-up.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:1024px){
+    nav{padding:1.5rem 2rem;} .nav-links{gap:1.2rem;}
+    .page-hero,.fruits,.vegetables,.wellness,.bienestar-quote{padding-left:2rem;padding-right:2rem;}
+    .foods-grid{grid-template-columns:repeat(2,1fr);}
+    .how-to-eat{padding:5rem 2rem;grid-template-columns:1fr;} .how-img{height:300px;}
+    .wellness-grid{grid-template-columns:1fr;}
+    footer{padding:4rem 2rem 2rem;} .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Glow Status</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="ritual.html">El Ritual</a></li>
+    <li><a href="skincare.html">Skincare</a></li>
+    <li><a href="bienestar.html" class="active">Bienestar</a></li>
+    <li><a href="shots.html">Shots Glow</a></li>
+    <li><a href="nosotras.html">Nosotras</a></li>
+  </ul>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <div class="page-tag">Piel · Alimentación · Mente</div>
+    <h1 class="page-title">Belleza que<br><em>nace adentro</em></h1>
+    <p class="page-desc">La piel es el espejo de lo que comes, piensas y sientes. El glow real no viene de los productos — viene del estilo de vida que construyes cada día.</p>
+  </div>
+</section>
+
+<section class="fruits">
+  <div class="section-label">Alimentación Consciente</div>
+  <h2 class="section-title">Frutas que<br><em>transforman tu piel</em></h2>
+  <div class="foods-grid">
+    <div class="food-card fade-up">
+      <span class="food-emoji">🍈</span>
+      <div class="food-name">Papaya</div>
+      <p class="food-benefit">Rica en vitamina C y enzimas naturales que exfolian desde adentro y aclaran manchas progresivamente.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🥭</span>
+      <div class="food-name">Mango</div>
+      <p class="food-benefit">Cargado de betacarotenos que le dan luminosidad y un tono uniforme y cálido a la piel.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🍓</span>
+      <div class="food-name">Frutos Rojos</div>
+      <p class="food-benefit">Antioxidantes que combaten el envejecimiento prematuro y la oxidación celular desde adentro.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🍉</span>
+      <div class="food-name">Sandía</div>
+      <p class="food-benefit">Altísimo contenido de agua. Ideal para mantener la piel hidratada, suave y jugosa todo el día.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🥝</span>
+      <div class="food-name">Kiwi</div>
+      <p class="food-benefit">Una sola unidad cubre el 100% de vitamina C diaria, esencial para la producción de colágeno.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🥑</span>
+      <div class="food-name">Aguacate</div>
+      <p class="food-benefit">Rico en grasas saludables que nutren la barrera cutánea desde adentro y reducen la inflamación.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji"> Pineapple 🍍</span>
+      <div class="food-name">Piña</div>
+      <p class="food-benefit">Contiene bromelina, una enzima que ayuda a reducir la inflamación y da claridad natural al cutis.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">✦</span>
+      <div class="food-name">Tip Glow Status</div>
+      <p class="food-benefit">Come frutas enteras mejor que en jugo — conservan la fibra y los nutrientes completos.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Verduras para el Glow</div>
+  <h2 class="section-title" style="margin-bottom:3rem">Verduras que<br><em>le dan vida a tu rostro</em></h2>
+  <div class="foods-grid">
+    <div class="food-card fade-up">
+      <span class="food-emoji">🥕</span>
+      <div class="food-name">Zanahoria</div>
+      <p class="food-benefit">Fuente de betacaroteno que protege contra el daño solar y aporta un glow cálido y natural.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🥬</span>
+      <div class="food-name">Espinaca & Kale</div>
+      <p class="food-benefit">Hierro, ácido fólico y vitamina K para combatir las ojeras y dar vitalidad al rostro.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🥒</span>
+      <div class="food-name">Pepino</div>
+      <p class="food-benefit">Hidratación profunda y efecto antiinflamatorio. Reduce la hinchazón y el cansancio visible.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🍅</span>
+      <div class="food-name">Tomate</div>
+      <p class="food-benefit">Licopeno, el antioxidante que protege la piel del envejecimiento y la oxida menos con el sol.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🥦</span>
+      <div class="food-name">Brócoli</div>
+      <p class="food-benefit">Vitamina C, K y antioxidantes que reparan la piel y estimulan la producción de colágeno.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🫛</span>
+      <div class="food-name">Remolacha</div>
+      <p class="food-benefit">Purifica la sangre y aporta ese tono rosado y saludable que se nota directamente en la piel.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">🌿</span>
+      <div class="food-name">Hierbas Verdes</div>
+      <p class="food-benefit">Menta, albahaca y cilantro — antiinflamatorios naturales que ayudan a la digestión y la piel.</p>
+    </div>
+    <div class="food-card fade-up">
+      <span class="food-emoji">✦</span>
+      <div class="food-name">Tip Glow Status</div>
+      <p class="food-benefit">Cocina las verduras al vapor o cómelas crudas para conservar al máximo sus nutrientes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="how-to-eat">
+  <div class="how-img fade-up">
+    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=80" alt="Alimentacion consciente">
+  </div>
+  <div class="how-content fade-up">
+    <div class="section-label">Cómo y Cuándo Comer</div>
+    <h2>El timing<br>del <em>glow</em></h2>
+    <div class="how-rules">
+      <div class="how-rule">
+        <span class="how-rule-icon">💧</span>
+        <div class="how-rule-text"><strong>2 litros de agua al día</strong>La hidratación es el primer paso para una piel plump y luminosa. Sin agua, ningún producto funciona bien.</div>
+      </div>
+      <div class="how-rule">
+        <span class="how-rule-icon">🌅</span>
+        <div class="how-rule-text"><strong>Empieza el día con fruta o limón</strong>Activa tu digestión y tu metabolismo desde temprano. El agua tibia con limón en ayunas es el ritual base.</div>
+      </div>
+      <div class="how-rule">
+        <span class="how-rule-icon">🧘</span>
+        <div class="how-rule-text"><strong>Come despacio y en calma</strong>El estrés durante las comidas bloquea la absorción de nutrientes. Comer con prisa es uno de los mayores enemigos del glow.</div>
+      </div>
+      <div class="how-rule">
+        <span class="how-rule-icon">🚫</span>
+        <div class="how-rule-text"><strong>Reduce los ultra procesados</strong>El exceso de azúcar, los fritos y los ultra procesados son los principales enemigos del glow real y duradero.</div>
+      </div>
+      <div class="how-rule">
+        <span class="how-rule-icon">🥑</span>
+        <div class="how-rule-text"><strong>Incluye grasas buenas</strong>Aguacate, frutos secos, aceite de oliva — nutren la barrera cutánea desde adentro y reducen la inflamación.</div>
+      </div>
+      <div class="how-rule">
+        <span class="how-rule-icon">⏳</span>
+        <div class="how-rule-text"><strong>4-6 semanas de paciencia</strong>Tu piel tarda entre 4 y 6 semanas en reflejar los cambios en tu alimentación. Sé constante y paciente.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wellness">
+  <div class="section-label">Bienestar Integral</div>
+  <h2 class="section-title">Más allá de la<br><em>alimentación</em></h2>
+  <div class="wellness-grid">
+    <div class="wellness-card fade-up">
+      <div class="wellness-accent">💤</div>
+      <span class="wellness-icon">😴</span>
+      <div class="wellness-name">Descanso Reparador</div>
+      <p class="wellness-desc">7-8 horas de sueño no son un lujo — son biología. Mientras duermes, tu piel se regenera, produce colágeno y elimina toxinas. El "beauty sleep" es real.</p>
+    </div>
+    <div class="wellness-card fade-up">
+      <div class="wellness-accent">🧠</div>
+      <span class="wellness-icon">🧠</span>
+      <div class="wellness-name">Salud Mental y Autoestima</div>
+      <p class="wellness-desc">No siempre estamos bien — y eso es completamente válido. Trabajar la autoestima y los pensamientos propios es tan importante como cualquier rutina de skincare.</p>
+    </div>
+    <div class="wellness-card fade-up">
+      <div class="wellness-accent">✦</div>
+      <span class="wellness-icon">🏃</span>
+      <div class="wellness-name">Movimiento Regular</div>
+      <p class="wellness-desc">El ejercicio mejora la circulación, oxigena la piel y reduce el estrés — el mayor enemigo del glow. No tiene que ser en el gym; una caminata diaria transforma tu piel.</p>
+    </div>
+  </div>
+</section>
+
+<section class="bienestar-quote">
+  <blockquote>"La alimentación es el pilar más poderoso para conseguir una piel luminosa, hidratada y saludable. No se trata de dietas restrictivas, sino de elegir con consciencia lo que le das a tu cuerpo cada día."</blockquote>
+  <cite>— Glow Status · Piel con Glow, Belleza que Nace desde Adentro</cite>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><span class="logo">GLOW STATUS</span><p>Belleza consciente de adentro hacia afuera. Acompañándote en la construcción de tu mejor versión con constancia, disciplina y amor propio.</p></div>
+    <div class="footer-col"><h4>Explorar</h4><ul><li><a href="ritual.html">El Ritual</a></li><li><a href="skincare.html">Skincare</a></li><li><a href="bienestar.html">Bienestar</a></li><li><a href="shots.html">Shots Glow</a></li></ul></div>
+    <div class="footer-col"><h4>Comunidad</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li><li><a href="#">Pinterest</a></li><li><a href="#">Newsletter</a></li></ul></div>
+    <div class="footer-col"><h4>Nosotras</h4><ul><li><a href="nosotras.html">La Historia</a></li><li><a href="nosotras.html">Filosofía</a></li><li><a href="#">Glow Girls</a></li><li><a href="#">Contacto</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Glow Status · Cartago, Colombia · Todos los derechos reservados</p><span class="footer-slogan">De adentro hacia afuera ✦</span></div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*100);});
+  },{threshold:0.08});
+  document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
